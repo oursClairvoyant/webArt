@@ -58,16 +58,24 @@ function animate() {
     //nettoie le canvas pour l'effet de chute des boules
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    balls.forEach((ball) => {
+    balls.forEach((ball, index) => {
+
       if (ball.isFalling && ball.y < canvas.height / 2) {
         ball.fall();
       } else if (ball.y > canvas.height / 2) {
         ball.isFalling = false;
+        ball.jumpForce = Math.abs(samples[index]) * 10;
       }
+
+
+      if (!ball.isFalling) {
         ball.isFalling = false;
         ball.jump();
-      }
-      if (!ball.isFalling) {
+        if (ball.jumpForce <= 0) {
+
+          ball.isFalling = true;
+          //ball.jumpForce = 2;
+        }
       }
 
       ball.draw();
